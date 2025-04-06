@@ -53,6 +53,7 @@
   background: white;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
 table {
@@ -127,28 +128,42 @@ tr:hover {
 
 .count-table {
   border-collapse: collapse;
-  margin: 20px 0;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
   width: auto;
+}
+
+.count-table th.row-header {
+  text-align: left;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  border: 2px solid #2c3e50;
+  min-width: 100px;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .count-table td {
   border: 2px solid #2c3e50;
-  padding: 12px 20px;
+  padding: 8px 15px;
   text-align: center;
-  font-size: 16px;
-  min-width: 50px;
 }
 
-.count-table .header-row {
+.count-table .header-row th,
+.count-table .header-row td {
   background-color: #34495e;
   color: white;
   font-weight: bold;
 }
 
-.count-table .sum-row {
+.count-table .sum-row th,
+.count-table .sum-row td {
   background-color: #ecf0f1;
   font-weight: bold;
+}
+
+/* Додаємо hover ефект */
+.count-table tr:hover:not(.header-row):not(.sum-row) {
+  background-color: #f5f5f5;
 }
 
 /* Розділяємо таблиці */
@@ -172,41 +187,55 @@ tr:hover {
 .rank-table {
   border-collapse: collapse;
   margin: 0 auto;
-  width: 100%;
-  min-width: 600px;
+  width: auto;
+}
+
+.rank-table th.row-header {
+  text-align: left;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  border: 2px solid #2c3e50;
+  min-width: 100px;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .rank-table td {
   border: 2px solid #2c3e50;
-  padding: 8px 12px;
+  padding: 8px 15px;
   text-align: center;
-  font-size: clamp(14px, 2vw, 16px);
 }
 
-.rank-table tr:first-child {
+.rank-table .header-row th,
+.rank-table .header-row td {
   background-color: #34495e;
   color: white;
   font-weight: bold;
 }
 
-/* Додамо нумерацію рядків */
-.rank-table tr:not(:first-child) {
-  position: relative;
-}
-
-.rank-table tr:not(:first-child):before {
-  content: attr(data-row-number);
-  position: absolute;
-  left: -25px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: bold;
-  color: #666;
-}
-
-/* Виділення порожніх комірок */
-.rank-table td:empty {
+/* Стилі для рядків з нульовими значеннями */
+.rank-table td:not(.header-row td):empty,
+.rank-table td:not(.header-row td):contains("0") {
   background-color: #f5f5f5;
+}
+
+/* Додаємо hover ефект */
+.rank-table tr:hover:not(.header-row) {
+  background-color: #f5f5f5;
+}
+
+/* Загальні стилі для всіх таблиць */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 30px;
+  padding: 10px;
+}
+
+.row-header {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: #f8f9fa;
 }
 
 .controls {
@@ -270,4 +299,55 @@ tr:hover {
 
 .save-btn:hover {
   background-color: #45a049;
+}
+
+.table-title {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.rank-count-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: auto;
+}
+
+.rank-count-table th.row-header {
+  text-align: left;
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  border: 2px solid #2c3e50;
+  min-width: 100px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.rank-count-table td {
+  border: 2px solid #2c3e50;
+  padding: 8px 15px;
+  text-align: center;
+}
+
+.rank-count-table .header-row th,
+.rank-count-table .header-row td {
+  background-color: #34495e;
+  color: white;
+  font-weight: bold;
+}
+
+.rank-count-table .sum-row th,
+.rank-count-table .sum-row td {
+  background-color: #ecf0f1;
+  font-weight: bold;
+}
+
+.rank-count-table tr:hover:not(.header-row):not(.sum-row) {
+  background-color: #f5f5f5;
+}
+
+/* Виділення нульових значень */
+.rank-count-table td:not(.header-row td):contains("0") {
+  background-color: #f9f9f9;
 }
