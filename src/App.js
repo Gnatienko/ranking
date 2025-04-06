@@ -98,52 +98,6 @@ function App() {
     }
   }, [settings]);
 
-  const generateCountTable = () => {
-    if (!tableData) return [];
-
-    const countData = [];
-    // Додаємо заголовки рядків
-    const rowTitles = [
-      "Об'єкти", // Заголовок для першого рядка
-      "Ранг 1", // Для першого рангу
-      "Ранг 2", // Для другого рангу
-      "Ранг 3", // Для третього рангу
-      "Ранг 4", // Для четвертого рангу
-      "Сума", // Для останнього рядка
-    ];
-
-    // Перший рядок: номери об'єктів
-    countData.push(
-      Array.from({ length: settings.totalObjects }, (_, i) => i + 1)
-    );
-
-    // Підрахунок для кожного рядка
-    for (let i = 0; i < settings.ranksCount; i++) {
-      const rowCounts = [];
-      for (let obj = 1; obj <= settings.totalObjects; obj++) {
-        const count = tableData[i]
-          ? tableData[i].filter((cell) => Math.abs(cell) === obj).length
-          : 0;
-        rowCounts.push(count);
-      }
-      countData.push(rowCounts);
-    }
-
-    // Сума по стовпцях
-    const sums = Array(settings.totalObjects)
-      .fill(0)
-      .map((_, colIndex) =>
-        countData.slice(1).reduce((sum, row) => sum + row[colIndex], 0)
-      );
-    countData.push(sums);
-
-    // Додаємо заголовки до кожного рядка
-    return countData.map((row, index) => ({
-      title: rowTitles[index] || `Ранг ${index}`,
-      data: row,
-    }));
-  };
-
   const generateRankTable = () => {
     const rankData = Array(settings.totalObjects + 1)
       .fill()
@@ -211,10 +165,7 @@ function App() {
   };
 
   const generateRankCountTable = () => {
-    // Отримуємо дані з таблиці рангів
     const rankTableData = generateRankTable();
-
-    // Знаходимо всі унікальні ранги (крім 0)
     const uniqueRanks = new Set();
     rankTableData.slice(1).forEach((row) => {
       row.data.forEach((value) => {
@@ -222,26 +173,21 @@ function App() {
       });
     });
 
-    // Сортуємо ранги
     const sortedRanks = Array.from(uniqueRanks).sort((a, b) => a - b);
-
-    // Створюємо таблицю підрахунку
     const countData = [];
 
-    // Додаємо заголовок з номерами об'єктів
+    // Змінюємо формат заголовків з 'Об'єкт N' на 'ON'
     countData.push({
       title: "Ранги",
       data: Array.from(
         { length: settings.totalObjects },
-        (_, i) => `Об'єкт ${i + 1}`
+        (_, i) => `O${i + 1}`
       ),
     });
 
-    // Підраховуємо кількість кожного рангу для кожного об'єкта
     sortedRanks.forEach((rank) => {
       const rowData = Array(settings.totalObjects).fill(0);
 
-      // Проходимо по кожному об'єкту в таблиці рангів
       for (let obj = 1; obj <= settings.totalObjects; obj++) {
         const objRow = rankTableData[obj];
         if (objRow) {
@@ -257,17 +203,13 @@ function App() {
       });
     });
 
-    // Додаємо рядок з сумою
-    const sums = Array(settings.totalObjects).fill(0);
-    countData.slice(1).forEach((row) => {
-      row.data.forEach((value, index) => {
-        sums[index] += value;
-      });
-    });
-
     countData.push({
       title: "Сума",
-      data: sums,
+      data: Array(settings.totalObjects)
+        .fill(0)
+        .map((_, index) =>
+          countData.slice(1, -1).reduce((sum, row) => sum + row.data[index], 0)
+        ),
     });
 
     return countData;
@@ -345,42 +287,17 @@ function App() {
       <div className="table-container">
         <h3 className="table-title">Таблиця розподілу об'єктів за рангами</h3>
         <table className="ranking-table">
-          <thead>
-            <tr>
+          <tbody>
+            <tr className="header-row">
+              <th className="row-header">Ранги</th>
               {Array.from({ length: settings.expertsCount }, (_, i) => (
-                <th key={i}>E{i + 1}</th>
+                <td key={i}>E{i + 1}</td>
               ))}
             </tr>
-          </thead>
-          <tbody>
             {tableData.map((row, rowIndex) => (
               <tr key={rowIndex}>
+                <th className="row-header">Ранг {rowIndex + 1}</th>
                 {row.map((cell, cellIndex) => (
-                  <td key={cellIndex}>{cell}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <h2 className="subtitle">Таблиця підрахунку</h2>
-      <div className="table-container">
-        <table className="count-table">
-          <tbody>
-            {generateCountTable().map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={
-                  rowIndex === 0
-                    ? "header-row"
-                    : rowIndex === generateCountTable().length - 1
-                    ? "sum-row"
-                    : ""
-                }
-              >
-                <th className="row-header">{row.title}</th>
-                {row.data.map((cell, cellIndex) => (
                   <td key={cellIndex}>{cell}</td>
                 ))}
               </tr>
@@ -407,22 +324,13 @@ function App() {
 
       <h2 className="subtitle">Таблиця підрахунку рангів</h2>
       <div className="table-container">
-        <table className="rank-count-table">
+        <table className="rank-table">
           <tbody>
             {generateRankCountTable().map((row, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={
-                  rowIndex === 0
-                    ? "header-row"
-                    : rowIndex === generateRankCountTable().length - 1
-                    ? "sum-row"
-                    : ""
-                }
-              >
+              <tr key={rowIndex} className={rowIndex === 0 ? "header-row" : ""}>
                 <th className="row-header">{row.title}</th>
                 {row.data.map((cell, cellIndex) => (
-                  <td key={cellIndex}>{cell}</td>
+                  <td key={cellIndex}>{cell || "0"}</td>
                 ))}
               </tr>
             ))}

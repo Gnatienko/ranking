@@ -45,152 +45,21 @@
 }
 
 .table-container {
-  width: 95%;
-  max-width: 1200px;
   overflow-x: auto;
-  margin: 0 auto;
-  padding: 10px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
+  padding: 10px;
 }
 
-table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  width: 100%;
-  min-width: 600px; /* мінімальна ширина для читабельності */
-}
-
-th,
-td {
-  border: 2px solid #2c3e50;
-  padding: 8px 12px;
-  text-align: center;
-  font-size: clamp(14px, 2vw, 16px); /* адаптивний розмір шрифту */
-  white-space: nowrap;
-}
-
-th {
-  background-color: #34495e;
-  color: white;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-tr:hover {
-  background-color: #f5f5f5;
-}
-
-.generate-btn {
-  padding: 8px 16px;
-  font-size: clamp(14px, 2vw, 16px);
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 15px 0;
-  transition: background-color 0.3s ease;
-}
-
-.generate-btn:hover {
-  background-color: #45a049;
-}
-
-.generate-btn:active {
-  background-color: #3d8b40;
-}
-
-.title {
-  font-size: clamp(20px, 4vw, 28px);
-  margin: 15px 0;
-  padding: 0 10px;
-  text-align: center;
-  color: #2c3e50;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.subtitle {
-  font-size: clamp(18px, 3vw, 24px);
-  margin: 15px 0;
-  padding: 0 10px;
-  text-align: center;
-  color: #2c3e50;
-}
-
-.count-table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  width: auto;
-}
-
-.count-table th.row-header {
-  text-align: left;
-  padding: 8px 15px;
-  background-color: #f8f9fa;
-  border: 2px solid #2c3e50;
-  min-width: 100px;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.count-table td {
-  border: 2px solid #2c3e50;
-  padding: 8px 15px;
-  text-align: center;
-}
-
-.count-table .header-row th,
-.count-table .header-row td {
-  background-color: #34495e;
-  color: white;
-  font-weight: bold;
-}
-
-.count-table .sum-row th,
-.count-table .sum-row td {
-  background-color: #ecf0f1;
-  font-weight: bold;
-}
-
-/* Додаємо hover ефект */
-.count-table tr:hover:not(.header-row):not(.sum-row) {
-  background-color: #f5f5f5;
-}
-
-/* Розділяємо таблиці */
-.ranking-table {
-  margin-bottom: 40px;
-}
-
-/* Медіа-запит для малих екранів */
-@media screen and (max-width: 768px) {
-  th,
-  td {
-    padding: 6px 8px;
-  }
-
-  .table-container {
-    width: 98%;
-    padding: 5px;
-  }
-}
-
+.ranking-table,
 .rank-table {
   border-collapse: collapse;
   margin: 0 auto;
   width: auto;
 }
 
-.rank-table th.row-header {
+/* Стилі для заголовків рядків */
+.row-header,
+th {
   text-align: left;
   padding: 8px 15px;
   background-color: #f8f9fa;
@@ -200,37 +69,41 @@ tr:hover {
   color: #2c3e50;
 }
 
-.rank-table td {
+/* Стилі для комірок */
+td {
   border: 2px solid #2c3e50;
   padding: 8px 15px;
   text-align: center;
 }
 
-.rank-table .header-row th,
-.rank-table .header-row td {
+/* Стилі для заголовків */
+.header-row th,
+.header-row td,
+thead tr th {
   background-color: #34495e;
   color: white;
   font-weight: bold;
 }
 
-/* Стилі для рядків з нульовими значеннями */
-.rank-table td:not(.header-row td):empty,
-.rank-table td:not(.header-row td):contains("0") {
+/* Стилі для рядка суми */
+.sum-row th,
+.sum-row td {
+  background-color: #ecf0f1;
+  font-weight: bold;
+}
+
+/* Ефект наведення для рядків */
+tr:hover:not(.header-row):not(.sum-row) {
   background-color: #f5f5f5;
 }
 
-/* Додаємо hover ефект */
-.rank-table tr:hover:not(.header-row) {
-  background-color: #f5f5f5;
+/* Стилі для нульових значень */
+td:empty,
+td:contains("0") {
+  background-color: #f9f9f9;
 }
 
-/* Загальні стилі для всіх таблиць */
-.table-container {
-  overflow-x: auto;
-  margin-bottom: 30px;
-  padding: 10px;
-}
-
+/* Фіксація заголовків при прокрутці */
 .row-header {
   position: sticky;
   left: 0;
@@ -238,6 +111,32 @@ tr:hover {
   background-color: #f8f9fa;
 }
 
+/* Стилі для заголовків таблиць */
+.title {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 28px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  color: #2c3e50;
+  margin: 30px 0 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.table-title {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Стилі для кнопок */
 .controls {
   display: flex;
   gap: 10px;
@@ -245,20 +144,34 @@ tr:hover {
   justify-content: center;
 }
 
-.settings-btn {
+.settings-btn,
+.generate-btn {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #2196f3;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.settings-btn {
+  background-color: #2196f3;
 }
 
 .settings-btn:hover {
   background-color: #1976d2;
 }
 
+.generate-btn {
+  background-color: #4caf50;
+}
+
+.generate-btn:hover {
+  background-color: #45a049;
+}
+
+/* Стилі для форми налаштувань */
 .settings-form {
   background-color: #f5f5f5;
   padding: 20px;
@@ -301,20 +214,14 @@ tr:hover {
   background-color: #45a049;
 }
 
-.table-title {
-  font-size: 18px;
-  color: #2c3e50;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.rank-count-table {
+/* Загальні стилі для всіх таблиць */
+.rank-table {
   border-collapse: collapse;
   margin: 0 auto;
   width: auto;
 }
 
-.rank-count-table th.row-header {
+.rank-table th.row-header {
   text-align: left;
   padding: 8px 15px;
   background-color: #f8f9fa;
@@ -324,30 +231,43 @@ tr:hover {
   color: #2c3e50;
 }
 
-.rank-count-table td {
+.rank-table td {
   border: 2px solid #2c3e50;
   padding: 8px 15px;
   text-align: center;
 }
 
-.rank-count-table .header-row th,
-.rank-count-table .header-row td {
+.rank-table .header-row th,
+.rank-table .header-row td {
   background-color: #34495e;
   color: white;
   font-weight: bold;
 }
 
-.rank-count-table .sum-row th,
-.rank-count-table .sum-row td {
+.rank-table tr:hover:not(.header-row) {
+  background-color: #f5f5f5;
+}
+
+/* Стилі для нульових значень */
+.rank-table td:not(.header-row td):empty,
+.rank-table td:not(.header-row td):contains("0") {
+  background-color: #f9f9f9;
+}
+
+/* Фіксація заголовків при прокрутці */
+.rank-table .row-header {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: #f8f9fa;
+}
+
+/* Стилі для рядка суми */
+.rank-table tr:last-child {
   background-color: #ecf0f1;
   font-weight: bold;
 }
 
-.rank-count-table tr:hover:not(.header-row):not(.sum-row) {
-  background-color: #f5f5f5;
-}
-
-/* Виділення нульових значень */
-.rank-count-table td:not(.header-row td):contains("0") {
-  background-color: #f9f9f9;
+.rank-table tr:last-child:hover {
+  background-color: #ecf0f1;
 }
