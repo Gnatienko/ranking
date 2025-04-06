@@ -86,22 +86,57 @@ function App() {
   const generateRankTable = () => {
     const rankData = Array(11)
       .fill()
-      .map(() => Array(5).fill(""));
-
-    // Заповнюємо перший рядок (E1...E5)
+      .map(() => Array(5).fill(0));
     rankData[0] = ["E1", "E2", "E3", "E4", "E5"];
 
-    // Для кожного стовпця першої таблиці
+    // Для кожного стовпця
     for (let col = 0; col < 5; col++) {
-      // Для кожного числа від 1 до 10
-      for (let row = 1; row <= 10; row++) {
-        // Шукаємо це число (по модулю) в стовпці першої таблиці
-        for (let i = 0; i < 4; i++) {
-          if (Math.abs(tableData[i][col]) === row) {
-            rankData[row][col] = i + 1; // Записуємо номер рядка + 1
+      // Створюємо масив груп чисел з однаковими рангами
+      const groups = [];
+      let currentGroup = [];
+
+      // Проходимо по числах в стовпці
+      for (let row = 0; row < 4; row++) {
+        const currentNumber = tableData[row][col];
+
+        // Якщо число від'ємне, додаємо його до поточної групи
+        if (currentNumber < 0) {
+          if (currentGroup.length > 0) {
+            currentGroup.push({
+              value: Math.abs(currentNumber),
+              position: row + 1,
+            });
           }
+        } else {
+          // Якщо було попередня група, зберігаємо її
+          if (currentGroup.length > 0) {
+            groups.push([...currentGroup]);
+          }
+          // Починаємо нову групу
+          currentGroup = [
+            {
+              value: Math.abs(currentNumber),
+              position: row + 1,
+            },
+          ];
         }
       }
+      // Додаємо останню групу, якщо вона є
+      if (currentGroup.length > 0) {
+        groups.push(currentGroup);
+      }
+
+      // Розраховуємо та записуємо ранги
+      groups.forEach((group) => {
+        // Середній ранг для групи
+        const avgRank =
+          group.reduce((sum, item) => sum + item.position, 0) / group.length;
+
+        // Записуємо ранг для кожного числа в групі
+        group.forEach((item) => {
+          rankData[item.value][col] = avgRank;
+        });
+      });
     }
 
     return rankData;
