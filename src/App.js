@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 function App() {
@@ -9,41 +9,23 @@ function App() {
     [0, 0, 0, 0, 0],
   ]);
 
-  useEffect(() => {
-    generateRandomData();
-  }, []);
-
-  // Функція для генерації випадкового числа від -10 до 10 (крім 0)
   const getRandomNumber = () => {
     let num = Math.floor(Math.random() * 20) - 10;
     return num === 0 ? 1 : num;
   };
 
-  // Перевірка чи є число унікальним по модулю в стовпці
-  const isUniqueInColumn = (number, columnIndex, newData) => {
-    for (let i = 0; i < newData.length; i++) {
-      if (Math.abs(newData[i][columnIndex]) === Math.abs(number)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  const generateRandomData = () => {
+  const generateRandomData = useCallback(() => {
     const newData = Array(4)
       .fill()
       .map(() => Array(5).fill(null));
 
-    // Заповнюємо таблицю по стовпцях
     for (let col = 0; col < 5; col++) {
-      // Для першого рядка генеруємо тільки позитивні числа (1-10)
       let newNumber;
       do {
         newNumber = Math.floor(Math.random() * 10) + 1;
       } while (!isUniqueInColumn(newNumber, col, newData));
       newData[0][col] = newNumber;
 
-      // Для інших рядків генеруємо числа від -10 до 10 (крім 0)
       for (let row = 1; row < 4; row++) {
         do {
           newNumber = getRandomNumber();
@@ -53,6 +35,21 @@ function App() {
     }
 
     setTableData(newData);
+  }, []);
+
+  useEffect(() => {
+    generateRandomData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Перевірка чи є число унікальним по модулю в стовпці
+  const isUniqueInColumn = (number, columnIndex, newData) => {
+    for (let i = 0; i < newData.length; i++) {
+      if (Math.abs(newData[i][columnIndex]) === Math.abs(number)) {
+        return false;
+      }
+    }
+    return true;
   };
 
   // Функція для підрахунку кількості входжень числа в рядку
