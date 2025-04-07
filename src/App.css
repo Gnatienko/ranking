@@ -280,3 +280,36 @@ td:contains("0") {
 .ranking-table td {
   font-variant-numeric: tabular-nums;
 }
+
+/* Стилі для таблиці всіх ранжувань */
+.rankings-info {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+.page-btn {
+  padding: 8px 15px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.page-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-weight: bold;
+  padding: 0 10px;
+}

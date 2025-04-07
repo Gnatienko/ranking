@@ -3,6 +3,7 @@ import "./App.css";
 import RankingTable from "./components/RankingTable";
 import RankTable from "./components/RankTable";
 import RankCountTable from "./components/RankCountTable";
+import AllRankingsTable from "./components/AllRankingsTable";
 import SettingsForm from "./components/SettingsForm";
 import { generateRandomTableData } from "./utils/randomGenerators";
 
@@ -70,6 +71,9 @@ function App() {
 
       <h2 className="subtitle">Таблиця підрахунку рангів</h2>
       <RankCountTable tableData={tableData} settings={settings} />
+
+      <h2 className="subtitle">Всі можливі ранжування</h2>
+      <AllRankingsTable elementsCount={4} />
     </div>
   );
 }
