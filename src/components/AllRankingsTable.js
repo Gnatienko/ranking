@@ -5,19 +5,22 @@ import {
   countRankings,
 } from "../utils/rankingVariantsUtils";
 
-const AllRankingsTable = ({ elementsCount = 4 }) => {
+const AllRankingsTable = ({ settings }) => {
   const [rankings, setRankings] = useState([]);
   const [page, setPage] = useState(1);
   const rankingsPerPage = 25;
   const [totalRankings, setTotalRankings] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  // Отримуємо кількість рангів з налаштувань
+  const { ranksCount } = settings;
+
   // Форматування ранжування для відображення в таблиці
   const formatRankingForDisplay = (ranking) => {
     // Перетворюємо з формату вкладених масивів у плоский масив елементів
     const result = [];
 
-    for (let i = 0; i < ranking.length; i++) {
+    for (let i = 0; i < ranking.length && i < ranksCount; i++) {
       const group = ranking[i];
 
       for (let j = 0; j < group.length; j++) {
@@ -31,8 +34,8 @@ const AllRankingsTable = ({ elementsCount = 4 }) => {
       }
     }
 
-    // Забезпечуємо, щоб результат мав довжину elementsCount
-    while (result.length < elementsCount) {
+    // Забезпечуємо, щоб результат мав довжину ranksCount
+    while (result.length < ranksCount) {
       result.push("");
     }
 
@@ -41,21 +44,22 @@ const AllRankingsTable = ({ elementsCount = 4 }) => {
 
   useEffect(() => {
     setLoading(true);
+    setPage(1); // Скидаємо пагінацію при зміні ranksCount
 
-    // Для великих значень elementsCount використовуємо лише формулу підрахунку
-    if (elementsCount > 5) {
-      setTotalRankings(countRankings(elementsCount));
+    // Для великих значень ranksCount використовуємо лише формулу підрахунку
+    if (ranksCount > 5) {
+      setTotalRankings(countRankings(ranksCount));
       setRankings([]);
       setLoading(false);
       return;
     }
 
-    // Генеруємо всі ранжування для невеликих значень elementsCount
-    const genRankings = generateAllRankings(elementsCount);
+    // Генеруємо всі ранжування для невеликих значень ranksCount
+    const genRankings = generateAllRankings(ranksCount);
     setRankings(genRankings);
     setTotalRankings(genRankings.length);
     setLoading(false);
-  }, [elementsCount]);
+  }, [ranksCount]);
 
   // Отримуємо поточну сторінку ранжувань
   const currentRankings = rankings.slice(
@@ -68,7 +72,7 @@ const AllRankingsTable = ({ elementsCount = 4 }) => {
   return (
     <div className="table-container">
       <h3 className="table-title">
-        Всі можливі ранжування для {elementsCount} елементів
+        Всі можливі ранжування для {ranksCount} елементів
       </h3>
 
       <div className="rankings-info">
@@ -85,7 +89,7 @@ const AllRankingsTable = ({ elementsCount = 4 }) => {
             <thead>
               <tr className="header-row">
                 <th className="row-header">№</th>
-                {Array.from({ length: elementsCount }, (_, i) => (
+                {Array.from({ length: ranksCount }, (_, i) => (
                   <th key={i}>Ранг {i + 1}</th>
                 ))}
               </tr>
@@ -131,7 +135,7 @@ const AllRankingsTable = ({ elementsCount = 4 }) => {
         </>
       ) : (
         <p>
-          Для {elementsCount} елементів існує занадто багато ранжувань для
+          Для {ranksCount} елементів існує занадто багато ранжувань для
           відображення.
         </p>
       )}

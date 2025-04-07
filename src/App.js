@@ -73,7 +73,7 @@ function App() {
       <RankCountTable tableData={tableData} settings={settings} />
 
       <h2 className="subtitle">Всі можливі ранжування</h2>
-      <AllRankingsTable elementsCount={4} />
+      <AllRankingsTable settings={settings} />
     </div>
   );
 }
