@@ -1,56 +1,54 @@
 /**
  * Генерує всі можливі ранжування для заданої кількості елементів
+ * Використовує кешування для оптимізації
  * @param {number} elementsCount - Кількість елементів
- * @returns {Array} - Масив усіх можливих ранжувань, кожне ранжування є масивом груп
+ * @returns {Array} - Масив усіх можливих ранжувань
  */
+const rankingsGenerationCache = new Map();
+
 export const generateAllRankings = (elementsCount) => {
-  // Для невеликих значень elementsCount
+  // Перевіряємо кеш
+  if (rankingsGenerationCache.has(elementsCount)) {
+    return rankingsGenerationCache.get(elementsCount);
+  }
+
+  // Для невеликих значень використовуємо попередньо обчислені значення
   if (elementsCount <= 0) return [[]];
   if (elementsCount === 1) return [[[1]]];
   if (elementsCount === 2) {
-    return [
-      [[1], [2]], // 1 > 2
-      [[2], [1]], // 2 > 1
-      [[1, 2]], // 1 = 2
-    ];
+    return [[[1], [2]], [[2], [1]], [[1, 2]]];
   }
 
-  // Ініціалізуємо кеш для швидкого доступу
-  const rankingsCache = new Map();
-  rankingsCache.set(0, [[]]);
-  rankingsCache.set(1, [[[1]]]);
-  rankingsCache.set(2, [[[1], [2]], [[2], [1]], [[1, 2]]]);
+  // Для більших значень використовуємо рекурсію з кешуванням
+  const smallerRankings = generateAllRankings(elementsCount - 1);
+  const result = [];
 
-  // Рекурсивна функція з кешуванням
-  const generateWithCache = (n) => {
-    if (rankingsCache.has(n)) {
-      return rankingsCache.get(n);
-    }
+  for (const ranking of smallerRankings) {
+    // Додаємо новий елемент на кожну можливу позицію
+    for (let i = 0; i <= ranking.length; i++) {
+      // Додаємо як окремий елемент
+      const newRanking = [
+        ...ranking.slice(0, i),
+        [elementsCount],
+        ...ranking.slice(i),
+      ];
+      result.push(newRanking);
 
-    const smallerRankings = generateWithCache(n - 1);
-    const result = [];
-
-    for (const ranking of smallerRankings) {
-      // Додаємо новий елемент на кожну можливу позицію
-      for (let i = 0; i <= ranking.length; i++) {
-        // Додаємо як окремий елемент
-        const newRanking = [...ranking.slice(0, i), [n], ...ranking.slice(i)];
-        result.push(newRanking);
-
-        // Додаємо з еквівалентністю до існуючих елементів
-        if (i < ranking.length) {
-          const newRankingWithEquivalence = [...ranking];
-          newRankingWithEquivalence[i] = [...newRankingWithEquivalence[i], n];
-          result.push(newRankingWithEquivalence);
-        }
+      // Додаємо з еквівалентністю до існуючих елементів
+      if (i < ranking.length) {
+        const newRankingWithEquivalence = [...ranking.slice()];
+        newRankingWithEquivalence[i] = [
+          ...newRankingWithEquivalence[i],
+          elementsCount,
+        ];
+        result.push(newRankingWithEquivalence);
       }
     }
+  }
 
-    rankingsCache.set(n, result);
-    return result;
-  };
-
-  return generateWithCache(elementsCount);
+  // Зберігаємо результат у кеші
+  rankingsGenerationCache.set(elementsCount, result);
+  return result;
 };
 
 /**

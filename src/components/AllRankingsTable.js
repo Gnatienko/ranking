@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
   generateAllRankings,
-  formatRanking,
   countRankings,
 } from "../utils/rankingVariantsUtils";
 
 const AllRankingsTable = ({ settings }) => {
   const [rankings, setRankings] = useState([]);
   const [page, setPage] = useState(1);
-  const rankingsPerPage = 25;
+  const [rankingsPerPage, setRankingsPerPage] = useState(25);
   const [totalRankings, setTotalRankings] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -47,11 +46,21 @@ const AllRankingsTable = ({ settings }) => {
     setPage(1); // Скидаємо пагінацію при зміні ranksCount
 
     // Для великих значень ranksCount використовуємо лише формулу підрахунку
-    if (ranksCount > 5) {
+    if (ranksCount > 7) {
       setTotalRankings(countRankings(ranksCount));
       setRankings([]);
       setLoading(false);
       return;
+    }
+
+    // Адаптація кількості рядків на сторінку в залежності від ranksCount
+    // щоб уникнути занадто довгого часу завантаження та рендерингу
+    if (ranksCount >= 6) {
+      setRankingsPerPage(10); // Меньше рядків для більших ранжувань
+    } else if (ranksCount >= 5) {
+      setRankingsPerPage(20);
+    } else {
+      setRankingsPerPage(25);
     }
 
     // Генеруємо всі ранжування для невеликих значень ranksCount
@@ -79,10 +88,19 @@ const AllRankingsTable = ({ settings }) => {
         <p>
           Загальна кількість ранжувань: <strong>{totalRankings}</strong>
         </p>
+        {ranksCount >= 6 && (
+          <p className="loading-warning">
+            <strong>Увага:</strong> Для {ranksCount} елементів кількість
+            ранжувань дуже велика. Відображення може зайняти деякий час.
+          </p>
+        )}
       </div>
 
       {loading ? (
-        <p>Генерація ранжувань...</p>
+        <div className="loading">
+          <p>Генерація ранжувань...</p>
+          <div className="loading-spinner"></div>
+        </div>
       ) : rankings.length > 0 ? (
         <>
           <table className="rank-table">
@@ -136,7 +154,7 @@ const AllRankingsTable = ({ settings }) => {
       ) : (
         <p>
           Для {ranksCount} елементів існує занадто багато ранжувань для
-          відображення.
+          відображення ({totalRankings} варіантів).
         </p>
       )}
     </div>
