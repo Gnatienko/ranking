@@ -48,6 +48,7 @@
   overflow-x: auto;
   margin-bottom: 30px;
   padding: 10px;
+  max-width: 100%;
 }
 
 .ranking-table,
@@ -55,25 +56,29 @@
   border-collapse: collapse;
   margin: 0 auto;
   width: auto;
+  table-layout: fixed;
 }
 
 /* Стилі для заголовків рядків */
 .row-header,
 th {
   text-align: left;
-  padding: 8px 15px;
   background-color: #f8f9fa;
   border: 2px solid #2c3e50;
-  min-width: 100px;
+  min-width: 80px;
+  width: 80px;
   font-weight: bold;
   color: #2c3e50;
+  white-space: nowrap;
 }
 
 /* Стилі для комірок */
-td {
+.rank-table td,
+.ranking-table td {
   border: 2px solid #2c3e50;
-  padding: 8px 15px;
   text-align: center;
+  min-width: 40px;
+  width: 40px;
 }
 
 /* Стилі для заголовків */
@@ -223,7 +228,6 @@ td:contains("0") {
 
 .rank-table th.row-header {
   text-align: left;
-  padding: 8px 15px;
   background-color: #f8f9fa;
   border: 2px solid #2c3e50;
   min-width: 100px;
@@ -233,7 +237,6 @@ td:contains("0") {
 
 .rank-table td {
   border: 2px solid #2c3e50;
-  padding: 8px 15px;
   text-align: center;
 }
 
@@ -270,4 +273,10 @@ td:contains("0") {
 
 .rank-table tr:last-child:hover {
   background-color: #ecf0f1;
+}
+
+/* Стилі для чисел в комірках */
+.rank-table td,
+.ranking-table td {
+  font-variant-numeric: tabular-nums;
 }
