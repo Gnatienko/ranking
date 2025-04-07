@@ -46,22 +46,25 @@ function App() {
     setShowSettings(false);
   };
 
-  const getRandomNumber = () => {
+  const getRandomNumber = useCallback(() => {
     let num =
       Math.floor(Math.random() * (settings.totalObjects * 2)) -
       settings.totalObjects;
     return num === 0 ? 1 : num;
-  };
+  }, [settings.totalObjects]);
 
-  const isUniqueInColumn = (number, expertIndex, newData) => {
-    // Перевірка унікальності вибору для кожного експерта
-    for (let i = 0; i < settings.ranksCount; i++) {
-      if (Math.abs(newData[i][expertIndex]) === Math.abs(number)) {
-        return false;
+  const isUniqueInColumn = useCallback(
+    (number, expertIndex, newData) => {
+      // Перевірка унікальності вибору для кожного експерта
+      for (let i = 0; i < settings.ranksCount; i++) {
+        if (Math.abs(newData[i][expertIndex]) === Math.abs(number)) {
+          return false;
+        }
       }
-    }
-    return true;
-  };
+      return true;
+    },
+    [settings.ranksCount]
+  );
 
   const generateRandomData = useCallback(() => {
     const newData = Array(settings.ranksCount)
@@ -96,7 +99,13 @@ function App() {
           .map(() => Array(settings.expertsCount).fill(0))
       );
     }
-  }, [settings]);
+  }, [
+    settings.ranksCount,
+    settings.expertsCount,
+    settings.totalObjects,
+    getRandomNumber,
+    isUniqueInColumn,
+  ]);
 
   const generateRankTable = () => {
     const rankData = Array(settings.totalObjects + 1)
@@ -217,12 +226,7 @@ function App() {
 
   useEffect(() => {
     generateRandomData();
-  }, [settings]); // Перегенеруємо дані при зміні налаштувань
-
-  // Функція для підрахунку кількості входжень числа в рядку
-  const countNumberInRow = (number, rowData) => {
-    return rowData.filter((cell) => Math.abs(cell) === number).length;
-  };
+  }, [generateRandomData]); // Перегенеруємо дані при зміні налаштувань
 
   return (
     <div className="App">
