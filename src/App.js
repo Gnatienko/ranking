@@ -6,6 +6,7 @@ import RankCountTable from "./components/RankCountTable";
 import AllRankingsTable from "./components/AllRankingsTable";
 import SettingsForm from "./components/SettingsForm";
 import { generateRandomTableData } from "./utils/randomGenerators";
+import { generateRankCountTableData } from "./utils/rankingUtils";
 
 function App() {
   // Змінюємо назву на більш відповідну
@@ -73,7 +74,10 @@ function App() {
       <RankCountTable tableData={tableData} settings={settings} />
 
       <h2 className="subtitle">Всі можливі ранжування</h2>
-      <AllRankingsTable settings={settings} />
+      <AllRankingsTable
+        rankCountTableData={generateRankCountTableData(tableData, settings)}
+        expertsCount={settings.expertsCount}
+      />
     </div>
   );
 }
