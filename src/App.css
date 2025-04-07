@@ -1,3 +1,4 @@
+/* Загальні стилі для застосунку */
 .App {
   display: flex;
   flex-direction: column;
@@ -9,41 +10,7 @@
   overflow-x: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
+/* Загальні стилі для таблиць */
 .table-container {
   overflow-x: auto;
   margin-bottom: 30px;
@@ -51,8 +18,8 @@
   max-width: 100%;
 }
 
-.ranking-table,
-.rank-table {
+.rank-table,
+.ranking-table {
   border-collapse: collapse;
   margin: 0 auto;
   width: auto;
@@ -70,15 +37,18 @@ th {
   font-weight: bold;
   color: #2c3e50;
   white-space: nowrap;
+  position: sticky;
+  left: 0;
+  z-index: 1;
 }
 
 /* Стилі для комірок */
-.rank-table td,
-.ranking-table td {
+td {
   border: 2px solid #2c3e50;
   text-align: center;
   min-width: 40px;
   width: 40px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Стилі для заголовків */
@@ -92,7 +62,8 @@ thead tr th {
 
 /* Стилі для рядка суми */
 .sum-row th,
-.sum-row td {
+.sum-row td,
+.rank-table tr:last-child {
   background-color: #ecf0f1;
   font-weight: bold;
 }
@@ -106,14 +77,6 @@ tr:hover:not(.header-row):not(.sum-row) {
 td:empty,
 td:contains("0") {
   background-color: #f9f9f9;
-}
-
-/* Фіксація заголовків при прокрутці */
-.row-header {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background-color: #f8f9fa;
 }
 
 /* Стилі для заголовків таблиць */
@@ -150,7 +113,8 @@ td:contains("0") {
 }
 
 .settings-btn,
-.generate-btn {
+.generate-btn,
+.page-btn {
   padding: 10px 20px;
   font-size: 16px;
   color: white;
@@ -174,6 +138,11 @@ td:contains("0") {
 
 .generate-btn:hover {
   background-color: #45a049;
+}
+
+.page-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 
 /* Стилі для форми налаштувань */
@@ -219,68 +188,6 @@ td:contains("0") {
   background-color: #45a049;
 }
 
-/* Загальні стилі для всіх таблиць */
-.rank-table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  width: auto;
-}
-
-.rank-table th.row-header {
-  text-align: left;
-  background-color: #f8f9fa;
-  border: 2px solid #2c3e50;
-  min-width: 100px;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.rank-table td {
-  border: 2px solid #2c3e50;
-  text-align: center;
-}
-
-.rank-table .header-row th,
-.rank-table .header-row td {
-  background-color: #34495e;
-  color: white;
-  font-weight: bold;
-}
-
-.rank-table tr:hover:not(.header-row) {
-  background-color: #f5f5f5;
-}
-
-/* Стилі для нульових значень */
-.rank-table td:not(.header-row td):empty,
-.rank-table td:not(.header-row td):contains("0") {
-  background-color: #f9f9f9;
-}
-
-/* Фіксація заголовків при прокрутці */
-.rank-table .row-header {
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  background-color: #f8f9fa;
-}
-
-/* Стилі для рядка суми */
-.rank-table tr:last-child {
-  background-color: #ecf0f1;
-  font-weight: bold;
-}
-
-.rank-table tr:last-child:hover {
-  background-color: #ecf0f1;
-}
-
-/* Стилі для чисел в комірках */
-.rank-table td,
-.ranking-table td {
-  font-variant-numeric: tabular-nums;
-}
-
 /* Стилі для таблиці всіх ранжувань */
 .rankings-info {
   margin: 10px 0;
@@ -293,20 +200,6 @@ td:contains("0") {
   align-items: center;
   margin: 20px 0;
   gap: 10px;
-}
-
-.page-btn {
-  padding: 8px 15px;
-  background-color: #2196f3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.page-btn:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
 }
 
 .page-info {
