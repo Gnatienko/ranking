@@ -27,9 +27,15 @@ export const generateRankTableData = (tableData, settings) => {
 
     // Проходимо по кожному рядку
     for (let choice = 0; choice < tableData.length; choice++) {
-      const currentNumber = tableData[choice][expert];
+      const currentValue = tableData[choice][expert];
+      // Перевіряємо, чи це рядок зі знаком рівності
+      const isEqual =
+        typeof currentValue === "string" && currentValue.startsWith("=");
+      const currentNumber = isEqual
+        ? parseInt(currentValue.substring(1))
+        : currentValue;
 
-      if (currentNumber < 0 && currentGroup.length > 0) {
+      if (isEqual && currentGroup.length > 0) {
         currentGroup.push({
           value: Math.abs(currentNumber),
           position: choice + 1,

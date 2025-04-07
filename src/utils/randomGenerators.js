@@ -1,21 +1,35 @@
 /**
- * Генерує випадкове число від -max до max (крім 0)
+ * Генерує випадкове число від 1 до max, з можливістю додавання знаку рівності
  */
 export const getRandomNumber = (max) => {
-  let num = Math.floor(Math.random() * (max * 2)) - max;
-  return num === 0 ? 1 : num;
+  // Генеруємо випадкове число від 1 до max
+  const num = Math.floor(Math.random() * max) + 1;
+
+  // З ймовірністю 0.3 додаємо знак рівності
+  if (Math.random() < 0.3 && num !== 0) {
+    return `=${num}`;
+  }
+
+  return num;
 };
 
 /**
- * Перевіряє унікальність числа по модулю в стовпці
+ * Перевіряє унікальність числа в стовпці
  */
 export const isUniqueInColumn = (number, expertIndex, data, ranksCount) => {
+  const numValue =
+    typeof number === "string" ? parseInt(number.substring(1)) : number;
+
   for (let i = 0; i < ranksCount; i++) {
-    if (
-      data[i] &&
-      data[i][expertIndex] &&
-      Math.abs(data[i][expertIndex]) === Math.abs(number)
-    ) {
+    if (!data[i] || !data[i][expertIndex]) continue;
+
+    const existingValue = data[i][expertIndex];
+    const existingNumValue =
+      typeof existingValue === "string"
+        ? parseInt(existingValue.substring(1))
+        : existingValue;
+
+    if (Math.abs(existingNumValue) === Math.abs(numValue)) {
       return false;
     }
   }
@@ -33,14 +47,14 @@ export const generateRandomTableData = (settings) => {
 
   try {
     for (let expert = 0; expert < expertsCount; expert++) {
-      // Перший вибір кожного експерта завжди позитивний
+      // Перший вибір кожного експерта завжди без знаку рівності
       let newNumber;
       do {
         newNumber = Math.floor(Math.random() * totalObjects) + 1;
       } while (!isUniqueInColumn(newNumber, expert, newData, ranksCount));
       newData[0][expert] = newNumber;
 
-      // Інші вибори можуть бути як позитивними, так і негативними
+      // Інші вибори можуть бути зі знаком рівності
       for (let choice = 1; choice < ranksCount; choice++) {
         do {
           newNumber = getRandomNumber(totalObjects);
