@@ -65,8 +65,7 @@ th {
   text-align: left;
   background-color: #f8f9fa;
   border: 2px solid #2c3e50;
-  min-width: 80px;
-  width: 80px;
+  min-width: 8px;
   font-weight: bold;
   color: #2c3e50;
   white-space: nowrap;
@@ -222,32 +221,25 @@ td:contains("0") {
 /* Загальні стилі для всіх таблиць */
 .rank-table {
   border-collapse: collapse;
-  margin: 0 auto;
+  margin: 0 10px; /* Додаємо відступ між таблицями */
   width: auto;
 }
 
-.rank-table th.row-header {
-  text-align: left;
-  background-color: #f8f9fa;
-  border: 2px solid #2c3e50;
-  min-width: 100px;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
+.rank-table th,
 .rank-table td {
   border: 2px solid #2c3e50;
+  padding: 8px;
   text-align: center;
+  height: 20px; /* Встановлюємо фіксовану висоту для комірок */
 }
 
-.rank-table .header-row th,
-.rank-table .header-row td {
+.rank-table th {
   background-color: #34495e;
   color: white;
   font-weight: bold;
 }
 
-.rank-table tr:hover:not(.header-row) {
+.rank-table tr:hover {
   background-color: #f5f5f5;
 }
 
@@ -279,4 +271,25 @@ td:contains("0") {
 .rank-table td,
 .ranking-table td {
   font-variant-numeric: tabular-nums;
+}
+
+.table-container p {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.rank-table th:first-child,
+.rank-table td:first-child {
+  text-align: center;
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.table-subtitle {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+  text-align: center;
 }

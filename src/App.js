@@ -3,8 +3,10 @@ import "./App.css";
 import RankingTable from "./components/RankingTable";
 import RankTable from "./components/RankTable";
 import RankCountTable from "./components/RankCountTable";
+import AllRankingsTable from "./components/AllRankingsTable";
 import SettingsForm from "./components/SettingsForm";
 import { generateRandomTableData } from "./utils/randomGenerators";
+import { generateRankCountTableData } from "./utils/rankingUtils";
 
 function App() {
   // Змінюємо назву на більш відповідну
@@ -70,6 +72,12 @@ function App() {
 
       <h2 className="subtitle">Таблиця підрахунку рангів</h2>
       <RankCountTable tableData={tableData} settings={settings} />
+
+      <h2 className="subtitle">Всі можливі ранжування</h2>
+      <AllRankingsTable
+        rankCountTableData={generateRankCountTableData(tableData, settings)}
+        expertsCount={settings.expertsCount}
+      />
     </div>
   );
 }
